@@ -112,6 +112,9 @@ The seed supplies the sports and badges used by the application. Integration tes
 
 ## How to run the mobile application
 
+For Android/iOS builds with camera and microphone access for live streams and
+voice/video calls, follow the [native app setup](docs/features/native-app.md).
+
 From the repository root:
 
 ```bash

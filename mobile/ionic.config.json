@@ -1,5 +1,5 @@
 {
   "name": "GORA",
-  "integrations": {},
+  "integrations": { "capacitor": {} },
   "type": "vue-vite"
 }

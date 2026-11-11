@@ -6,6 +6,9 @@
   "scripts": {
     "mobile": "npm run dev --prefix mobile",
     "mobile:build": "npm run build --prefix mobile",
+    "mobile:android": "npm run android:sync --prefix mobile",
+    "mobile:android:open": "npm run android:open --prefix mobile",
+    "mobile:ios": "npm run ios:sync --prefix mobile",
     "mobile:typecheck": "npm run typecheck --prefix mobile",
     "server": "npm run start:dev --prefix server",
     "server:build": "npm run build --prefix server",

@@ -1,7 +1,23 @@
+import { Capacitor } from '@capacitor/core';
+
+/** Capacitor's WebView requests native permissions when getUserMedia is called. */
+export async function requestMedia(constraints: MediaStreamConstraints): Promise<MediaStream> {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    throw new Error(
+      Capacitor.isNativePlatform()
+        ? 'Camera and microphone are unavailable. Update Android System WebView or your device OS, then reopen GORA.'
+        : 'Use a supported browser on HTTPS or localhost to access your camera and microphone.',
+    );
+  }
+  return navigator.mediaDevices.getUserMedia(constraints);
+}
+
 export function mediaError(error: unknown): string {
   const name = typeof error === 'object' && error && 'name' in error ? error.name : '';
   if (name === 'NotAllowedError' || name === 'SecurityError')
-    return 'Allow camera and microphone access in your browser settings, then try again.';
+    return Capacitor.isNativePlatform()
+      ? `Allow camera and microphone access for GORA in your phone ${Capacitor.getPlatform() === 'ios' ? 'Settings > Apps > GORA' : 'Settings > Apps > GORA > Permissions'}, then try again.`
+      : 'Allow camera and microphone access in your browser settings, then try again.';
   if (name === 'NotFoundError') return 'No camera or microphone was found. Connect them and try again.';
   if (name === 'NotReadableError') return 'Your camera or microphone is busy. Close other apps using it and try again.';
   return error instanceof Error ? error.message : 'Could not open your camera. Please try again.';

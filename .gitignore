@@ -33,9 +33,8 @@ Thumbs.db
 platforms/
 plugins/
 
-# Capacitor native projects, when added later
-android/
-ios/
+# Capacitor native source is versioned; generated assets and builds are ignored
+# by mobile/android/.gitignore and mobile/ios/.gitignore.
 
 # Prisma generated client
 server/src/generated/

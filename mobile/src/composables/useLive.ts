@@ -3,7 +3,7 @@ import { ApiError } from '@/services/api-client';
 import { liveApi, releaseLive, type LiveStreamInfo } from '@/services/live-api.service';
 import { useAuthStore } from '@/stores/auth';
 import { createAuthorizedCall } from '@/stores/authorized';
-import { gatherDescription, mediaError, stopMedia } from '@/utils/live-media';
+import { gatherDescription, mediaError, requestMedia, stopMedia } from '@/utils/live-media';
 
 export function useLive() {
   const auth = useAuthStore();
@@ -87,10 +87,10 @@ export function useLive() {
     busy.value = true;
     error.value = '';
     try {
-      if (!navigator.mediaDevices?.getUserMedia || typeof RTCPeerConnection === 'undefined') {
-        throw new Error('Use a supported browser on HTTPS or localhost to access your camera and microphone.');
+      if (typeof RTCPeerConnection === 'undefined') {
+        throw new Error('Live video needs WebRTC support. Update your browser or device OS, then try again.');
       }
-      const media = await navigator.mediaDevices.getUserMedia({
+      const media = await requestMedia({
         video: { width: { ideal: 1280 }, height: { ideal: 720 }, facingMode: 'user' },
         audio: true,
       });

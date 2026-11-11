@@ -5,7 +5,7 @@ import { liveApi } from '@/services/live-api.service';
 import { ApiError } from '@/services/api-client';
 import { useAuthStore } from './auth';
 import { captureSession, describeContentError } from './authorized';
-import { mediaError, stopMedia } from '@/utils/live-media';
+import { mediaError, requestMedia, stopMedia } from '@/utils/live-media';
 import { showNotice } from '@/utils/notice';
 
 export const useDirectCallStore = defineStore('direct-call', () => {
@@ -153,10 +153,9 @@ export const useDirectCallStore = defineStore('direct-call', () => {
     }
     if (
       !auth.accessToken ||
-      !navigator.mediaDevices?.getUserMedia ||
       typeof RTCPeerConnection === 'undefined'
     ) {
-      void showNotice('Calls need a supported browser with microphone access.');
+      void showNotice('Calls need WebRTC support. Update your browser or device OS, then try again.');
       return;
     }
     const isCurrent = captureSession(auth);
@@ -167,7 +166,7 @@ export const useDirectCallStore = defineStore('direct-call', () => {
     error.value = null;
     let media: MediaStream | null = null;
     try {
-      media = await navigator.mediaDevices.getUserMedia({
+      media = await requestMedia({
         audio: true,
         video: mode === 'VIDEO',
       });
@@ -204,7 +203,7 @@ export const useDirectCallStore = defineStore('direct-call', () => {
     error.value = null;
     let media: MediaStream | null = null;
     try {
-      media = await navigator.mediaDevices.getUserMedia({ audio: true, video });
+      media = await requestMedia({ audio: true, video });
       if (!isCurrent() || version !== generation) {
         stopMedia(media);
         return;
@@ -319,7 +318,7 @@ export const useDirectCallStore = defineStore('direct-call', () => {
     busy.value = true;
     let camera: MediaStream | null = null;
     try {
-      camera = await navigator.mediaDevices.getUserMedia({ video: true });
+      camera = await requestMedia({ video: true });
       if (!isCurrent() || version !== generation) {
         stopMedia(camera);
         return;

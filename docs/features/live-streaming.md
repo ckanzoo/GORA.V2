@@ -14,6 +14,9 @@ Run `npx prisma generate` and `npx prisma migrate deploy` from `server/` for mig
 
 ## Deployment
 
+For bundled Android/iOS apps and camera/microphone permissions, follow the
+[native app setup](native-app.md).
+
 For relay installation, Vercel variables, TLS, and verification, follow the [TURN setup guide](turn-setup.md). The same relay configuration serves direct voice/video calls and Go Live.
 
 - Camera/microphone access requires HTTPS or localhost. Accessing Vite through a plain HTTP LAN IP does not provide a secure camera context. Remote devices also need a reachable API URL in `mobile/.env` and the matching API CORS origin.
