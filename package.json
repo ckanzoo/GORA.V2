@@ -14,5 +14,8 @@
     "server:build": "npm run build --prefix server",
     "server:typecheck": "npm run typecheck --prefix server",
     "typecheck": "npm run typecheck --prefix mobile && npm run typecheck --prefix server"
+  },
+  "dependencies": {
+    "@capacitor/network": "^8.0.1"
   }
 }
